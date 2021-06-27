@@ -34,7 +34,7 @@ Label(root, text="STUDENT INFORMATION SYSTEM", font = ('Palatino Linotype', 50, 
 Label(mainFrame, text="STUDENTS", font = ('Palatino Linotype', 30, 'bold'),fg="#104c70",bg="#eaebeb", width=34).grid(row=0,column=0, columnspan=6)
 Label(mainFrame2, text="COURSES", font = ('Palatino Linotype', 30, 'bold'),fg="white",bg="#104c70", width=10).grid(row=0,column=0, columnspan=5)
 
-mydb = sqlite3.connect('SSIS.db')
+mydb = sqlite3.connect('SSIS2.db')
 mycursor = mydb.cursor()
 
 mydb.execute("PRAGMA foreign_keys = ON;"); 
