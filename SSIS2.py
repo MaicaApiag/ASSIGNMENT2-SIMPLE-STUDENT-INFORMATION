@@ -154,7 +154,7 @@ def clicked(*args):
                                 viewList()
                                 viewCourseList()
                             except:
-                                messagebox.showinfo("Student Information System","Course Nooooot Found")
+                                messagebox.showinfo("Student Information System","Course Not Found")
                         
                     else:
                         messagebox.showerror("SSIS","Invalid ID")
