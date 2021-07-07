@@ -34,7 +34,7 @@ Label(root, text="STUDENT INFORMATION SYSTEM", font = ('Palatino Linotype', 50, 
 Label(mainFrame, text="STUDENTS", font = ('Palatino Linotype', 30, 'bold'),fg="#104c70",bg="#eaebeb", width=34).grid(row=0,column=0, columnspan=6)
 Label(mainFrame2, text="COURSES", font = ('Palatino Linotype', 30, 'bold'),fg="white",bg="#104c70", width=10).grid(row=0,column=0, columnspan=5)
 
-mydb = sqlite3.connect('SSIS.db')
+mydb = sqlite3.connect('SSIS2.db')
 mycursor = mydb.cursor()
 
 mydb.execute("PRAGMA foreign_keys = ON;"); 
@@ -44,16 +44,16 @@ mycursor.execute("""CREATE TABLE IF NOT EXISTS COURSE_INFO(
         course_name text
         )""")
 
-
 mycursor.execute("""CREATE TABLE IF NOT EXISTS STUD_INFO_SYS(
         ID_number text PRIMARY KEY,
         name text,
-        course_code string,
+        course_code text,
         year_level text,
         gender text,
         FOREIGN KEY (course_code)
             REFERENCES COURSE_INFO(course_code)
                 ON DELETE CASCADE
+                ON UPDATE CASCADE
         )""")
 
 mydb.commit()
@@ -154,14 +154,14 @@ def clicked(*args):
                                 viewList()
                                 viewCourseList()
                             except:
-                                messagebox.showinfo("Student Information System","Course Nooooot Found")
+                                messagebox.showinfo("Student Information System","Course Not Found")
                         
                     else:
                         messagebox.showerror("SSIS","Invalid ID")
                     
             submit=Button(StudInf, text="SUBMIT",command=addData, font=('Palatino Linotype', 15,'bold'), bg="#104c70", fg="white")
             submit.grid(row=5, column=0, columnspan=3,pady=8)
-            
+
         def viewList():
             makeList()
             for i in tree.get_children():
@@ -385,7 +385,7 @@ def addCourse():
             top.destroy()
             mydb.commit()
             viewCourseList()
-            viewList()
+            clicked()
             
     AddCourse=Button(CourseInf, text="ADD COURSE", command=addCourseData,font=('Palatino Linotype', 15,'bold'), bg="#104c70", fg="white")
     AddCourse.grid(row=3, column=0, columnspan=3,pady=8)
@@ -424,7 +424,7 @@ def deleteCourse():
         mycursor.execute("DELETE FROM COURSE_INFO WHERE course_code=?",(courcode,))
         mydb.commit()
         treeSec.delete(selectedCourse)
-        viewList()
+        clicked()
         viewCourseList()
 
 def updateCourse(index):
@@ -432,11 +432,11 @@ def updateCourse(index):
         Cselect = treeSec.selection()
         for i in Cselect:
             mycursor.execute("UPDATE COURSE_INFO SET course_name=?\
-                             WHERE course_code=?", (Cname.get(),Ccode.get(),))
+                             WHERE course_code=?", (courseN.get(),code.get()))
             mydb.commit()
             messagebox.showinfo("Student Information System","Course updated successfully")
             viewCourseList()
-            viewList()
+            clicked()
         
     CinfoItem = treeSec.focus()
     values = treeSec.item(CinfoItem,"values")
